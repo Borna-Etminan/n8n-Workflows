@@ -2,6 +2,7 @@
 
 A simple Telegram AI chatbot built with n8n and Google Gemini.
 
+![Node Demo]()
 ## Features
 - Receives Telegram messages.
 - Generates AI responses using Google Gemini.
