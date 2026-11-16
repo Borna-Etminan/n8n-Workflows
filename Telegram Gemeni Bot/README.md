@@ -9,7 +9,7 @@ A simple Telegram AI chatbot built with n8n and Google Gemini.
 - Generates AI responses using Google Gemini.
 - Sends responses back to the same Telegram chat.
 - Supports any languages.
-- No PostgreSQL database required.
+- Simplr n8n database required.
 
 ## Requirements
 - n8n
