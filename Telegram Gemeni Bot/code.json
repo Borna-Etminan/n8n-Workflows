@@ -1,5 +1,5 @@
 {
-  "name": "Telegram AI Agent with Google Gemini",
+  "name": "Telegram AI Agent with Google Gemini and Simple Memory",
   "nodes": [
     {
       "parameters": {
@@ -20,13 +20,13 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $json.message?.text || $json.message?.caption || 'please send the answere as a text' }}",
+        "text": "={{ $json.message?.text || $json.message?.caption || \"لطفاً یک پیام متنی ارسال کن.\" }}",
         "options": {
-          "systemMessage": "You are a helpful Telegram assistant. Reply in the same language as the user's message. Keep replies clear and useful. If you are unsure, say so."
+          "systemMessage": "You are a helpful Telegram assistant. Reply in the same language as the user's message. Keep replies clear and useful. If the incoming message has no text, politely ask the user to send a text message."
         }
       },
       "id": "ai-agent",
-      "name": "AI Agent",
+      "name": "AI Agent1",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
@@ -43,8 +43,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1.2,
       "position": [
-        2032,
-        224
+        1824,
+        192
       ]
     },
     {
@@ -65,8 +65,8 @@
     {
       "parameters": {
         "content": "# Telegram AI Agent",
-        "height": 472,
-        "width": 968,
+        "height": 520,
+        "width": 952,
         "color": "#6570C3"
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -77,6 +77,21 @@
       ],
       "id": "workflow-note",
       "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        2016,
+        272
+      ],
+      "id": "simple-memory",
+      "name": "Simple Memory"
     }
   ],
   "connections": {
@@ -84,14 +99,14 @@
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI Agent1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "AI Agent": {
+    "AI Agent1": {
       "main": [
         [
           {
@@ -106,17 +121,28 @@
       "ai_languageModel": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI Agent1",
             "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
             "index": 0
           }
         ]
       ]
     }
   },
-  "pinData": {},
   "active": false,
   "settings": {
     "executionOrder": "v1"
-  }
+  },
+  "pinData": []
 }
